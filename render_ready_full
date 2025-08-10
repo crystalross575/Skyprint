@@ -1,0 +1,55 @@
+FROM python:3.11-slim
+WORKDIR /app
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+COPY . .
+ENV PORT=8000
+CMD uvicorn app.main:app --host 0.0.0.0 --port ${PORT}
+
+web: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+
+# Skyprint — Render-ready App (FastAPI + Static UI)
+
+This is your **click-a-link** astrology app. Deploy it to Render in minutes — no coding.
+
+## Quick Deploy (Render)
+1) Push this folder to a GitHub repo (GitHub → New → Upload files → drag everything inside this folder).
+2) In Render: **New + → Blueprint** → connect your repo.
+3) Click **Create Resources** → **Deploy**.
+4) Your app will be live at a URL like `https://skyprint.onrender.com`.
+
+### Endpoints
+- UI: `/`
+- Mock charts (instant): `POST /api/charts`
+- Swiss charts (real math): `POST /api/charts/swiss`
+- Daily transits: `GET /api/transits?date=YYYY-MM-DD&days=7&tz=America/Chicago&natal_json={...}`
+- Export PDF: `GET /api/export/pdf?reading_id=...`
+
+### Swiss Ephemeris files
+- For **real planetary & house positions**, add the Swiss ephemeris data files to the `/ephe` folder here, or set env var `SWISS_EPHE_PATH`.
+- If those files are missing, the app will automatically fall back to the mock engine (you’ll see a note in the UI).
+
+### Notes
+- Everything is served by one FastAPI app (no Node build needed).
+- Content blocks live in `content/` — add more JSON files to expand interpretations.
+
+services:
+  - type: web
+    name: skyprint
+    env: python
+    plan: free
+    region: oregon
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: SWISS_EPHE_PATH
+        value: /opt/render/project/src/ephe
+    autoDeploy: true
+    healthCheckPath: /
+
+fastapi==0.112.0
+uvicorn==0.30.6
+Jinja2==3.1.4
+reportlab==4.2.2
+pyswisseph==2.10.3
+pytz==2024.1
