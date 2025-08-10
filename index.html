@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Vibe Thrive — Skyprint</title>
+    <link rel="stylesheet" href="/static/style.css">
+  </head>
+  <body>
+    <div class="container">
+      <div class='brand-hero'>
+        <div class='brand-title'>Vibe Thrive — Skyprint</div>
+        <div class='brand-tag'>Astrologer-grade insight. Zero jargon. Click. Clarity.</div>
+      </div>
+
+      <div class="card">
+        <label>Name</label>
+        <input id="name" />
+        <label>Birth date</label>
+        <input id="date" type="date" />
+        <label>Birth time (optional)</label>
+        <input id="time" placeholder="HH:MM" />
+        <label>Time precision</label>
+        <select id="prec">
+          <option value="exact">Exact</option>
+          <option value="unknown">Unknown</option>
+        </select>
+        <label>Birthplace</label>
+        <input id="place" placeholder="City, Country" />
+        <div class="grid2">
+          <div><label>Lat</label><input id="lat" type="number" step="0.0001" value="32.7767" /></div>
+          <div><label>Lng</label><input id="lng" type="number" step="0.0001" value="-96.7970" /></div>
+        </div>
+        <label>Time zone</label>
+        <input id="tz" value="America/Chicago" />
+        <button id="go">Generate</button>
+      </div>
+
+      <div id="swissNote" class="card" style="display:none"></div>
+
+      <div class="card">
+        <strong>Daily Transits</strong> <button id="notify">Enable Notifications</button>
+        <div id="transits"></div>
+      </div>
+
+      <div id="out"></div>
+    </div>
+    <script src="/static/app.js"></script>
+  </body>
+</html>
