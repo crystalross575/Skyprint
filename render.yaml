@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: skyprint
+    env: python
+    plan: free
+    region: oregon
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: SWISS_EPHE_PATH
+        value: /opt/render/project/src/ephe
+    autoDeploy: true
+    healthCheckPath: /
